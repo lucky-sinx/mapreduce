@@ -28,20 +28,38 @@ public class LoadData {
                 + " LINES TERMINATED BY '\n'"
                 + "TBLPROPERTIES ('skip.header.line.count'='1')";
         con.execute(sql);
+//        //先清空数据
+//        sql = "truncate table querystate";
+//        con.execute(sql);
+//        sql = "truncate table querycountry";
+//        con.execute(sql);
 
         //导入数据,读取文件目录列表，每个文件都进行一次load data
         String data_path = "";
         File file = new File("src/main/java/com/wy/mapreduce/hivedemo/datafilelist");//Text文件
         BufferedReader br = null;//构造一个BufferedReader类来读取文件
+        boolean overwrite_state = true;
+        boolean overwrite_country = true;
+
         try {
             br = new BufferedReader(new FileReader(file));
             data_path = null;
             while ((data_path = br.readLine()) != null) {//使用readLine方法，一次读一行
 //                System.out.println(data_path);
                 if (data_path.contains("Country")) { //这是一个country表文件
-                    sql = String.format("load data local inpath '%s' overwrite into table querycountry", data_path);
+                    if (overwrite_country) {
+                        sql = String.format("load data local inpath '%s' overwrite into table querycountry", data_path);
+                        overwrite_country = false;
+                    } else {
+                        sql = String.format("load data local inpath '%s' into table querycountry", data_path);
+                    }
                 } else {//这是一个state表文件
-                    sql = String.format("load data local inpath '%s' overwrite into table querystate", data_path);
+                    if (overwrite_state) {
+                        sql = String.format("load data local inpath '%s' overwrite into table querystate", data_path);
+                        overwrite_state = false;
+                    } else {
+                        sql = String.format("load data local inpath '%s' into table querystate", data_path);
+                    }
                 }
                 con.execute(sql);
             }
