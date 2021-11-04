@@ -14,11 +14,8 @@ public class CountryDateReducer extends Reducer<CountryDate, CountryTable, Count
         CountryTable max_popular = new CountryTable();
         max_popular.setPopularityScore(-1);
         for (CountryTable value : values) {
-//            if (max_popular.getPopularityScore() < value.getPopularityScore() ) {
-            if (key.getDate().equals("2020-01-01")){
-                int a=0;
-            }
-            if (value.getQuery().equals("coronavirus")) {
+            if (max_popular.getPopularityScore() < value.getPopularityScore() ) {
+//            if (value.getQuery().equals("coronavirus")) {
                 try {
                     BeanUtils.copyProperties(max_popular, value);
                 } catch (IllegalAccessException e) {
@@ -29,6 +26,8 @@ public class CountryDateReducer extends Reducer<CountryDate, CountryTable, Count
             }
         }
         if(max_popular.getPopularityScore()!=-1)
+        {
             context.write(max_popular, NullWritable.get());
+        }
     }
 }

@@ -18,7 +18,7 @@ public class CountryDateMapper extends Mapper<LongWritable, Text, CountryDate, C
         String line = value.toString();
         String[] split = line.split("\t");
         if (this.fileName.contains("Country")) {
-            if (split[0].matches("202.-..-01")){
+            if (split[0].matches("202.-..-..")){
                 outK.setCountry(split[3]);
                 outK.setDate(split[0]);
                 outV.setDate(split[0]);

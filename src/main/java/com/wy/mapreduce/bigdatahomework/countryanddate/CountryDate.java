@@ -32,6 +32,7 @@ public class CountryDate implements WritableComparable<CountryDate> {
         int compareCountry = this.country.compareTo(o.getCountry());
         if (compareCountry == 0) {
             int compareDate = this.date.compareTo(o.getDate());
+//            int compareDate = this.date.substring(0, 9).compareTo(o.getDate().substring(0, 9));
             return compareDate;
         } else {
             return compareCountry;
